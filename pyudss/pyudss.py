@@ -1,18 +1,24 @@
 import win32com.client
-import pathlib
 import numpy as np
+import pathlib
 from win32com.client import makepy
 import sys
+from os import chdir
+
+
 
 class OpenDSS_network:
     def __init__(self, net_name):
+        path = str(pathlib.Path().resolve())
         self.DSSObj = win32com.client.Dispatch("OpenDSSEngine.DSS")
+        chdir(path)
         self.DSSObj.Start(0)
         self.DSSText = self.DSSObj.Text
         self.DSSCircuit = self.DSSObj.ActiveCircuit
         self.DSSSolution = self.DSSCircuit.Solution
         self.DSSLoads = self.DSSCircuit.Loads
-        self.DSSText.Command = 'Compile "' + str(pathlib.Path().resolve()) + '\\' + net_name + '"';
+        self.DSSText.Command = 'Redirect "' + path + '\\' + net_name + '"';
+        self.DSSText.Command = 'Compile "' + net_name + '"';
         self.DSSText.Command = 'solve'
                
     def get_loads(self):

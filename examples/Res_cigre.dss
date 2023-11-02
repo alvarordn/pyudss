@@ -1,0 +1,84 @@
+clear
+
+// Definimos la frecuencia base
+set defaultbasefrequency=50
+
+// Definimos la red
+new object=circuit.Res_cigre bus1=R0 basekv=20.0 pu=1.0 Angle=0 frequency=50 basefreq=50 R1=0.000001 X1=0.0
+
+// Definimos el transformador
+new transformer.Tres Phases=3 buses=[R0.1.2.3 R1.1.2.3.4] conns=[delta wye] kvs=[20.00 0.4] %Noloadloss=0.200634920634921 %imag=1.19 kvas=[630 630] basefreq=50 taps=[1,1] LeadLag=Euro wdg=1 %R=1.15087301587302 XHL=4.14312578874156 wdg=2 %R=0 rneut=0.000001
+
+// Definimos los tipos de líneas
+New linecode.UG1  nphases=4  BaseFreq=50  units=km Rmatrix = [0.211 | 0.049 0.211 | 0.049 0.049 0.211 | 0.049 0.049 0.049 0.211]
+~ Xmatrix = [0.747 | 0.673 0.747 | 0.651 0.673 0.747 | 0.673 0.651 0.673 0.747] Cmatrix = [0 | 0 0 | 0 0 0 | 0 0 0 0 ]
+New linecode.UG1br  nphases=4  BaseFreq=50  units=km Rmatrix = [0.211 | 0.049 0.211 | 0.049 0.049 0.211 | 1000.0 1000.0 1000.0 1000.0]
+~ Xmatrix = [0.747 | 0.673 0.747 | 0.651 0.673 0.747 | 0.0 0.0 0.0 0.0] Cmatrix = [0 | 0 0 | 0 0 0 | 0 0 0 0 ]
+New linecode.UG3  nphases=4  BaseFreq=50  units=km Rmatrix = [0.871 | 0.049 0.871 | 0.049 0.049 0.871 | 0.049 0.049 0.049 0.871]
+~ Xmatrix = [0.797 | 0.719 0.797 | 0.697 0.719 0.797 | 0.719 0.697 0.719 0.797] Cmatrix = [0 | 0 0 | 0 0 0 | 0 0 0 0 ]
+New linecode.UG3br  nphases=4  BaseFreq=50  units=km Rmatrix = [0.871 | 0.049 0.871 | 0.049 0.049 0.871 | 1000.0 1000.0 1000.0 1000.0]
+~ Xmatrix = [0.797 | 0.719 0.797 | 0.697 0.719 0.797 | 0.0 0.0 0.0 0.0] Cmatrix = [0 | 0 0 | 0 0 0 | 0 0 0 0 ]
+
+// Definimos las líneas
+New Line.R1_R2 Phases=4  Bus1=R1.1.2.3.4  Bus2=R2.1.2.3.4 LineCode=UG1  Length=0.035  units=km
+New Line.R2_R3 Phases=4  Bus1=R2.1.2.3.4  Bus2=R3.1.2.3.4 LineCode=UG1  Length=0.035  units=km
+New Line.R3_R4 Phases=4  Bus1=R3.1.2.3.4  Bus2=R4.1.2.3.4 LineCode=UG1  Length=0.035  units=km
+New Line.R4_R5 Phases=4  Bus1=R4.1.2.3.4  Bus2=R5.1.2.3.4 LineCode=UG1  Length=0.035  units=km
+New Line.R5_R6 Phases=4  Bus1=R5.1.2.3.4  Bus2=R6.1.2.3.4 LineCode=UG1  Length=0.035  units=km
+New Line.R6_R7 Phases=4  Bus1=R6.1.2.3.4  Bus2=R7.1.2.3.4 LineCode=UG1  Length=0.035  units=km
+New Line.R7_R8 Phases=4  Bus1=R7.1.2.3.4  Bus2=R8.1.2.3.4 LineCode=UG1  Length=0.035  units=km
+New Line.R8_R9 Phases=4  Bus1=R8.1.2.3.4  Bus2=R9.1.2.3.4 LineCode=UG1  Length=0.035  units=km
+New Line.R9_R10 Phases=4  Bus1=R9.1.2.3.4  Bus2=R10.1.2.3.4 LineCode=UG1  Length=0.035  units=km
+New Line.R3_R11 Phases=4  Bus1=R3.1.2.3.4  Bus2=R11.1.2.3.4 LineCode=UG3  Length=0.030  units=km
+New Line.R4_R12 Phases=4  Bus1=R4.1.2.3.4  Bus2=R12.1.2.3.4 LineCode=UG3  Length=0.035  units=km
+New Line.R12_R13 Phases=4  Bus1=R12.1.2.3.4  Bus2=R13.1.2.3.4 LineCode=UG3  Length=0.035  units=km
+New Line.R13_R14 Phases=4  Bus1=R13.1.2.3.4  Bus2=R14.1.2.3.4 LineCode=UG3  Length=0.035  units=km
+New Line.R14_R15 Phases=4  Bus1=R14.1.2.3.4  Bus2=R15.1.2.3.4 LineCode=UG3  Length=0.030  units=km
+New Line.R6_R16 Phases=4  Bus1=R6.1.2.3.4  Bus2=R16.1.2.3.4 LineCode=UG3  Length=0.030  units=km
+New Line.R9_R17 Phases=4  Bus1=R9.1.2.3.4  Bus2=R17.1.2.3.4 LineCode=UG3  Length=0.030  units=km
+New Line.R10_R18 Phases=4  Bus1=R10.1.2.3.4  Bus2=R18.1.2.3.4 LineCode=UG3  Length=0.030  units=km
+
+// Definimos las puesta a tierra
+New Reactor.Reactor_R2  phases=1  bus1=R2.4  R=40  X=0
+New Reactor.Reactor_R4  phases=1  bus1=R4.4  R=40  X=0
+New Reactor.Reactor_R6  phases=1  bus1=R6.4  R=40  X=0
+New Reactor.Reactor_R8  phases=1  bus1=R8.4  R=40  X=0
+New Reactor.Reactor_R10  phases=1  bus1=R10.4  R=40  X=0
+New Reactor.Reactor_R11  phases=1  bus1=R11.4  R=40  X=0
+New Reactor.Reactor_R15  phases=1  bus1=R15.4  R=40  X=0
+New Reactor.Reactor_R16  phases=1  bus1=R16.4  R=40  X=0
+New Reactor.Reactor_R17  phases=1  bus1=R17.4  R=40  X=0
+New Reactor.Reactor_R18  phases=1  bus1=R18.4  R=40  X=0
+
+// Definimos las tensiones de red
+set voltagebases=[20.00 0.40]
+
+// Definimos las cargas
+new Load.R11_A phases=1  Bus1=R11.1.4  conn=wye  Model=1  Basefreq=50 kv=(0.40 3 sqrt /)   kVA=10.0  Pf=0.85 vminpu=0.60  vmaxpu=2 
+new Load.R11_B phases=1  Bus1=R11.2.4  conn=wye  Model=1  Basefreq=50 kv=(0.40 3 sqrt /)   kVA=10.0  Pf=0.85 vminpu=0.60  vmaxpu=2 
+new Load.R11_C phases=1  Bus1=R11.3.4  conn=wye  Model=1  Basefreq=50 kv=(0.40 3 sqrt /)   kVA=10.0  Pf=0.85 vminpu=0.60  vmaxpu=2 
+
+new Load.R15_A phases=1  Bus1=R15.1.4  conn=wye  Model=1  Basefreq=50 kv=(0.40 3 sqrt /)   kVA=10.0  Pf=0.85 vminpu=0.60  vmaxpu=2 
+new Load.R15_B phases=1  Bus1=R15.2.4  conn=wye  Model=1  Basefreq=50 kv=(0.40 3 sqrt /)   kVA=10.0  Pf=0.85 vminpu=0.60  vmaxpu=2 
+new Load.R15_C phases=1  Bus1=R15.3.4  conn=wye  Model=1  Basefreq=50 kv=(0.40 3 sqrt /)   kVA=10.0  Pf=0.85 vminpu=0.60  vmaxpu=2 
+
+new Load.R16_A phases=1  Bus1=R16.1.4  conn=wye  Model=1  Basefreq=50 kv=(0.40 3 sqrt /)   kVA=18.5  Pf=0.85 vminpu=0.60  vmaxpu=2 
+new Load.R16_B phases=1  Bus1=R16.2.4  conn=wye  Model=1  Basefreq=50 kv=(0.40 3 sqrt /)   kVA=18.5  Pf=0.85 vminpu=0.60  vmaxpu=2 
+new Load.R16_C phases=1  Bus1=R16.3.4  conn=wye  Model=1  Basefreq=50 kv=(0.40 3 sqrt /)   kVA=18.5  Pf=0.85 vminpu=0.60  vmaxpu=2 
+
+new Load.R17_A phases=1  Bus1=R17.1.4  conn=wye  Model=1  Basefreq=50 kv=(0.40 3 sqrt /)   kVA=15.0  Pf=0.85 vminpu=0.60  vmaxpu=2 
+new Load.R17_B phases=1  Bus1=R17.2.4  conn=wye  Model=1  Basefreq=50 kv=(0.40 3 sqrt /)   kVA=15.0  Pf=0.85 vminpu=0.60  vmaxpu=2 
+new Load.R17_C phases=1  Bus1=R17.3.4  conn=wye  Model=1  Basefreq=50 kv=(0.40 3 sqrt /)   kVA=15.0  Pf=0.85 vminpu=0.60  vmaxpu=2 
+
+new Load.R18_A phases=1  Bus1=R18.1.4  conn=wye  Model=1  Basefreq=50 kv=(0.40 3 sqrt /)   kVA=16.0  Pf=0.85 vminpu=0.60  vmaxpu=2 
+new Load.R18_B phases=1  Bus1=R18.2.4  conn=wye  Model=1  Basefreq=50 kv=(0.40 3 sqrt /)   kVA=16.0  Pf=0.85 vminpu=0.60  vmaxpu=2 
+new Load.R18_C phases=1  Bus1=R18.3.4  conn=wye  Model=1  Basefreq=50 kv=(0.40 3 sqrt /)   kVA=16.0  Pf=0.85 vminpu=0.60  vmaxpu=2 
+
+// Actualizamos la lista de barras declaradas en el circuito
+makebuslist
+
+// Calculamos las tensiones base de cada barra
+calcvoltagebases
+
+// Resolvemos el problema
+solve
